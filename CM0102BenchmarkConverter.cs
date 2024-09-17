@@ -11,7 +11,7 @@ namespace CM0102
 
         public static void Main(string[] args)
         {
-            if (args.Length != 1)
+            if (args.Length < 1 || args.Length > 2)
             {
                 Console.WriteLine("Usage:");
                 Console.WriteLine("CM0102BenchmarkConverter.exe <test_name> [club_name]");
@@ -19,7 +19,7 @@ namespace CM0102
                 Console.WriteLine("test_name - name of the test (tactics).");
                 Console.WriteLine($"club_name - name of the club to look for in the benchmark results. Default is '{DEFAULT_CLUB_NAME}'.");
                 Console.WriteLine();
-                Console.WriteLine("Parses benchmark results from 'benchmark.csv' (or 'benchmark.txt' if first one is absent) and appends them in format of CMTacTool to 'tactool.txt' and in a format of CMTactics to 'repository.csv'.");
+                Console.WriteLine("Parses benchmark results from 'benchresult.csv' (or 'benchresult.txt' if first one is absent) and appends them in format of CMTacTool to 'tactool.txt' and in a format of CMTactics to 'repository.csv'.");
                 return;
             }
             new CM0102BenchmarkConverter().Start(args[0], args.Length > 1 ? args[1] : DEFAULT_CLUB_NAME);
@@ -27,11 +27,11 @@ namespace CM0102
 
         private void Start(string testName, string clubName)
         {
-            string inputFilename = "benchmark.csv";
-            if (!File.Exists(inputFilename)) inputFilename = "benchmark.txt";
+            string inputFilename = "benchresult.csv";
+            if (!File.Exists(inputFilename)) inputFilename = "benchresult.txt";
             if (!File.Exists(inputFilename))
             {
-                Console.WriteLine("Input file 'benchmark.csv' / 'benchmark.txt' is missing.");
+                Console.WriteLine("Input file 'benchresult.csv' / 'benchresult.txt' is missing.");
                 return;
             }
             ConvertBenchmarkResultToCMTacToolFormat(inputFilename, "repository.csv", "tactool.txt", testName, clubName);
